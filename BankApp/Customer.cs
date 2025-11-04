@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BankApp
 {
-    internal class Customer : UserManager
+    internal class Customer : Admin
     {
         public string Name { get; set; } // Customer's full name    
         public string CustomerID { get; set; } // Unique identifier for the customer

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BankApp
 {
-    internal class SystemOwner : UserManager
+    internal class SystemOwner : Admin
     {
         public string OwnerID { get; set; } // Unique identifier for the system owner
         public string Name { get; set; } // System owner's full name
