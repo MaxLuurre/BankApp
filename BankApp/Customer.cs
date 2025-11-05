@@ -8,6 +8,13 @@ namespace BankApp
 {
     internal class Customer : Admin
     {
+        // Global lists shared across the system: 
+        // TransactionList stores all transactions made in the bank,
+        // CurrencyRates holds all defined currency exchange rates.
+
+        public static List<Transaction> TransactionList = new List<Transaction>(); 
+
+        public static List<CurrencyRate> CurrencyRates = new List<CurrencyRate>();
         public string Name { get; set; } // Customer's full name    
         public string CustomerID { get; set; } // Unique identifier for the customer
 
@@ -17,7 +24,7 @@ namespace BankApp
 
         public List<Loan> Loans { get; set; } = new List<Loan>(); // List of customer's loans
 
-        public List<Transaction> Transactions { get; set; } 
+        
 
 
         
@@ -177,10 +184,20 @@ namespace BankApp
 
         public void TransactionHistory()
         {
+            foreach (var transaction in TransactionList) // uses the shared list.
+            {
+                transaction.PrintTransaction(); // Leverages the existing PrintTransaction() method from Transaction class
+            }
         }
 
+        // Loops through all available currency rates and prints each conversion pair 
+        // (e.g., USD → EUR) along with its current exchange rate.
         public void ViewCurrencyExchangeRates()
         {
+            foreach (var rate in CurrencyRates)
+            {
+                Console.WriteLine($"{rate.ExchangeRate} {rate.FromCurrency} {rate.ToCurrency}");
+            }
         }
 
         public Account GetAccountByNumber(string accountNumber) // Helper method for finding accounts

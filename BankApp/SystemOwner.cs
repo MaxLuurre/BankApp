@@ -8,9 +8,12 @@ namespace BankApp
 {
     internal class SystemOwner : Admin
     {
+        public static List<Transaction> TransactionList = new List<Transaction>(); // Static so all transactions are shared globally
         public string OwnerID { get; set; } // Unique identifier for the system owner
         public string Name { get; set; } // System owner's full name
         public int MaxLoanMultiplier { get; set; } = 5; // e.g., 5 means max loan = 5 × total deposits
+
+        public int TransferDelayMinutes { get; set; } = 15; // 15 minute wait/delay time before transfer goes through 
 
 
         // List<Account> is the collection of all accounts to loop through
@@ -23,11 +26,11 @@ namespace BankApp
        
         }
 
-        public void ViewAllTranscations(List<Transaction> transactions)
+        public void ViewAllTranscations()
         {
-            foreach (var transaction in transactions)
+            foreach (var transaction in TransactionList) // uses the shared list.
             {
-                Console.WriteLine($"{transaction.TransactionID} {transaction.SenderAccountNumber} {transaction.TargetAccountNumber} {transaction.Amount} {transaction.TransactionStatus}");
+                transaction.PrintTransaction(); // Leverages the existing PrintTransaction() method from Transaction class
             }
 
         }
@@ -39,8 +42,9 @@ namespace BankApp
         }
 
         // Set or change that 15-minute wait
-        public void SetTransferDelayPolicy()
+        public void SetTransferDelayPolicy(int transferDelayMinutes) // Parameter lets the owner adjust both policy dynamically
         {
+            TransferDelayMinutes = transferDelayMinutes;
         }
 
     }
