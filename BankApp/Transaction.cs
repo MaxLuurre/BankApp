@@ -10,7 +10,7 @@ namespace BankApp
     {
         public enum TransactionType
         {
-            Deposit, 
+            Deposit,
             Withdrawal,
             Transfer
         }
@@ -20,20 +20,41 @@ namespace BankApp
             Pending,
             Completed,
             Failed
-        }   
-        
-
-        public string TransactionID { get; set; }
-        public string SenderAccountNumber { get; set; }
-
-        public string TargetAccountNumber { get; set; }
+        }
+        //properties
+        public string Sender { get; set; }
+        public string Target { get; set; }
         public decimal Amount { get; set; }
-        public DateTime TransactionDate { get; set; }
-        public string Description { get; set; }
-        public TransactionType TypeOfTransaction { get; set; }
+        public DateTime TransactionDate { get; private set; }
 
-        public string Currency { get; set; }    
+
+        public TransactionType TypeOfTransaction { get; set; }
         public Status TransactionStatus { get; set; }
 
+
+
+        // Constructor with default transaction status
+        public Transaction(string sender, string target, decimal amount, TransactionType type)
+        {
+            Sender = sender;
+            Target = target;
+            Amount = amount;
+            TransactionDate = DateTime.Now; // get the current date ane time off of your computer expressed as local time
+            TypeOfTransaction = type;
+            TransactionStatus = Status.Pending; // default when transaction is created   
+        }
+
+        // Displaying transaction details
+        public void PrintTransaction()
+        {
+            Console.WriteLine("Transaction Details:");
+            Console.WriteLine($"  From: {Sender}");
+            Console.WriteLine($"  To: {Target}");
+            Console.WriteLine($"  Amount: {Amount:C}");
+            Console.WriteLine($"  Type: {TypeOfTransaction}");
+            Console.WriteLine($"  Status: {TransactionStatus}");
+            Console.WriteLine($"  Date: {TransactionDate}");
+            Console.WriteLine();
+        }
     }
 }
