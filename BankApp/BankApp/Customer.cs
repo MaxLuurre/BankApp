@@ -24,7 +24,9 @@ namespace BankApp
 
 
 
-
+        //---------------
+        //Create (Regular) Account
+        //---------------
         public void CreateAccount()
         {
             Console.Write("Choose currency (SEK/EUR/USD): ");
@@ -44,6 +46,23 @@ namespace BankApp
             Accounts.Add(newAccount);
 
             Console.WriteLine($"Account created!");
+            Console.WriteLine($"Bankgiro: {newAccount.AccountNumber}");
+            Console.WriteLine($"Currency: {newAccount.Currency}");
+            Console.WriteLine($"Balance:  {newAccount.Balance}");
+        }
+
+        //---------------
+        //Create Savings Account
+        //---------------
+
+        public void CreateSavingsAccount()
+        {
+            
+            SavingsAccount newAccount = new SavingsAccount();
+            newAccount.ApplyInterest(); // This applies interest from SavingsAccount class
+            Accounts.Add(newAccount);
+
+            Console.WriteLine($"Saving Account created!");
             Console.WriteLine($"Bankgiro: {newAccount.AccountNumber}");
             Console.WriteLine($"Currency: {newAccount.Currency}");
             Console.WriteLine($"Balance:  {newAccount.Balance}");
