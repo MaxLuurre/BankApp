@@ -74,7 +74,7 @@ namespace BankApp
                 {"Role", role},
                 {"Status", UserStatus.Active},
                 {"FailedAttempts", 0},
-                {"UserObject", userObject} //Store the object (Customer or null)
+                {"UserObject", userObject} //Store the object
             };
 
             UsersList.Add(newUser);

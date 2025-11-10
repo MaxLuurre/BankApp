@@ -8,8 +8,6 @@ namespace BankApp
 {
     internal class Ui : Admin
     {
-       
-
         // runs the program, we can move this later just did it for testing
         public void Run()
         {
@@ -117,22 +115,52 @@ namespace BankApp
                         Console.Clear();
                         cust.TransactionHistory();
                         break;
+                    //---------
+                    //Loan
+                    //---------
                     case "6":
-                        Console.Write("Loan Id: ");
-                        string loanId = Console.ReadLine();
-                        Console.Write("Principal amount: ");
-                        decimal principalAmount = Convert.ToDecimal(Console.ReadLine());
-                        Console.Write("Interest rate(Perscent): ");
-                        float interestRate = float.Parse(Console.ReadLine());
+                        {
+                            Console.Clear();
+                            Console.WriteLine("=== Create Loan ===");
 
-                        DateTime StartDate = DateTime.Now;
+                            // 1) Belopp
+                            decimal principalAmount;
+                            while (true)
+                            {
+                                Console.Write("Amount to loan: ");
+                                if (decimal.TryParse(Console.ReadLine(), out principalAmount) && principalAmount > 0)
+                                    break;
+                                Console.WriteLine("Ogiltigt belopp, försök igen.");
+                            }
 
-                        Console.Write("Due date(yyyy-mm-dd) ");
-                        DateTime DueDate = DateTime.Parse(Console.ReadLine());
+                            // 2) Låneperiod (1/2/3 år) – bara ett knapptryck
+                            int termYears = 0;
+                            while (true)
+                            {
+                                Console.Write("Choose term (1, 2, or 3 years): ");
+                                var termInput = Console.ReadLine();
+                                if (termInput is "1" or "2" or "3")
+                                {
+                                    termYears = int.Parse(termInput);
+                                    break;
+                                }
+                                Console.WriteLine("Ogiltigt val, ange 1, 2 eller 3.");
+                            }
 
-                        Loan newloan = new Loan(principalAmount, interestRate, StartDate, DueDate);
-                        Console.WriteLine($"Loan created! Outstanding amount: {newloan.OutstandingAmount}");
-                        break;
+                            // 3) Skapa lån – ränta + förfallodatum sätts automatiskt
+                            DateTime startDate = DateTime.Now;
+                            Loan newLoan = new Loan(principalAmount, termYears, startDate);
+
+                            Console.WriteLine();
+                            Console.WriteLine("Loan created!");
+                            Console.WriteLine($"Principal: {newLoan.PrincipalAmount}");
+                            Console.WriteLine($"Rate: {newLoan.InterestRatePercent:0.##}%");
+                            Console.WriteLine($"Term: {newLoan.TermYears} years");
+                            Console.WriteLine($"Start: {newLoan.StartDate:d}");
+                            Console.WriteLine($"Due: {newLoan.DueDate:d}");
+                            Console.WriteLine($"Outstanding amount: {newLoan.OutstandingAmount}");
+                            break;
+                        }
                     //-----------------
                     //Transfer balance
                     //-----------------
