@@ -16,10 +16,12 @@ namespace BankApp
             while (running)
             {
                 Console.Clear();
+                UiStyle.Header("BANK SYSTEM");
+
                 Console.WriteLine("1. Register user");
                 Console.WriteLine("2. Login");
                 Console.WriteLine("3. Exit");
-                Console.Write("Choice: ");
+                UiStyle.Prompt("Choice: ");
 
                 string choice = Console.ReadLine();
 
@@ -44,8 +46,7 @@ namespace BankApp
 
                 if (running)
                 {
-                    Console.WriteLine("\nPress any key to continue...");
-                    Console.ReadKey();
+                    UiStyle.Pause();
                 }
             }
         }
@@ -76,7 +77,7 @@ namespace BankApp
         // ----------------------------------------------------------
         static void ShowCustomerMenu(Dictionary<string, object> user)
         {
-            new SystemOwner().ProcessPendingTransactions(GetAllCustomers());
+            //new SystemOwner().ProcessPendingTransactions(GetAllCustomers());
 
             Customer cust = (Customer)user["UserObject"];
             bool loggedIn = true;
@@ -84,7 +85,7 @@ namespace BankApp
             while (loggedIn)
             {
                 Console.Clear();
-                Console.WriteLine($"Welcome {user["Username"]} (Customer)");
+                UiStyle.Header($"Welcome {user["Username"]} (Customer)");
                 Console.WriteLine("1. Create Account");
                 Console.WriteLine("2. Deposit Funds");
                 Console.WriteLine("3. Withdraw Funds");
@@ -121,46 +122,11 @@ namespace BankApp
                     case "6":
                         {
                             Console.Clear();
-                            Console.WriteLine("=== Create Loan ===");
-
-                            //  Amount
-                            decimal principalAmount;
-                            while (true)
-                            {
-                                Console.Write("Amount to loan: ");
-                                if (decimal.TryParse(Console.ReadLine(), out principalAmount) && principalAmount > 0)
-                                    break;
-                                Console.WriteLine("Invalid input");
-                            }
-
-                            // Loan time (1/2/3 years)
-                            int termYears = 0;
-                            while (true)
-                            {
-                                Console.Write("Choose term (1, 2, or 3 years): ");
-                                var termInput = Console.ReadLine();
-                                if (termInput is "1" or "2" or "3")
-                                {
-                                    termYears = int.Parse(termInput);
-                                    break;
-                                }
-                                Console.WriteLine("Invalid input, choose 1, 2 or 3.");
-                            }
-
-                            // Creates loan – rent + Due date sets automaticly
-                            DateTime startDate = DateTime.Now;
-                            Loan newLoan = new Loan(principalAmount, termYears, startDate);
-
-                            Console.WriteLine();
-                            Console.WriteLine("Loan created!");
-                            Console.WriteLine($"Principal: {newLoan.PrincipalAmount}");
-                            Console.WriteLine($"Rate: {newLoan.InterestRatePercent:0.##}%");
-                            Console.WriteLine($"Term: {newLoan.TermYears} years");
-                            Console.WriteLine($"Start: {newLoan.StartDate:d}");
-                            Console.WriteLine($"Due: {newLoan.DueDate:d}");
-                            Console.WriteLine($"Outstanding amount: {newLoan.OutstandingAmount}");
+                            var owner = new SystemOwner();
+                            cust.ApplyLoan(owner);
                             break;
                         }
+
                     //-----------------
                     //Transfer balance
                     //-----------------
@@ -192,7 +158,7 @@ namespace BankApp
 
                                 if (targetUser == null || targetUser["Role"].ToString() != "Customer")
                                 {
-                                    Console.WriteLine("Customer not found.");
+                                    UiStyle.Error("Customer not found.");
                                     break;
                                 }
 
@@ -201,7 +167,7 @@ namespace BankApp
                                 break;
 
                             default:
-                                Console.WriteLine("Invalid choice.");
+                                UiStyle.Error("Invalid choice.");
                                 break;
                         }
                         break;
@@ -209,14 +175,13 @@ namespace BankApp
                         loggedIn = false;
                         break;
                     default:
-                        Console.WriteLine("Invalid choice.");
+                        UiStyle.Error("Invalid choice.");
                         break;
                 }
 
                 if (loggedIn)
                 {
-                    Console.WriteLine("\nPress any key to continue...");
-                    Console.ReadKey();
+                    UiStyle.Pause();
                 }
             }
         }
@@ -275,20 +240,15 @@ namespace BankApp
                         break;
 
                     default:
-                        Console.WriteLine("Invalid choice.");
+                        UiStyle.Error("Invalid choice.");
                         break;
                 }
 
                 if (loggedIn)
                 {
-                    Console.WriteLine("\nPress any key to continue...");
-                    Console.ReadKey();
+                    UiStyle.Pause();
                 }
             }
         }
-
-        // ----------------------------------------------------------
-        // Menu SystemOwner
-        // ----------------------------------------------------------
     }
 }

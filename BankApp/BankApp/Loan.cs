@@ -8,7 +8,6 @@
         Closed,
     }
 
-    public string LoanID { get; private set; }
     public decimal PrincipalAmount { get; private set; }
     public decimal OutstandingAmount { get; private set; }
     public float InterestRatePercent { get; private set; }
@@ -23,8 +22,6 @@
         if (principalAmount <= 0) throw new ArgumentException("Principal amount must be positive.", nameof(principalAmount));
         if (!LoanPricing.IsSupportedTerm(termYears)) throw new ArgumentException("Loan term must be 1, 2, or 3 years.", nameof(termYears));
 
-        LoanID = Guid.NewGuid().ToString(); // <<< ADDED
-
         PrincipalAmount = principalAmount;
         OutstandingAmount = principalAmount;
         TermYears = termYears;
@@ -33,15 +30,11 @@
         DueDate = startDate.AddYears(termYears);
         Status = LoanStatus.Active;
     }
-
-    // Optional manual constructor
     public Loan(decimal principalamount, float interestratepercent, DateTime startdate, DateTime duedate)
     {
         if (principalamount <= 0) throw new ArgumentException("Principal must be positive.", nameof(principalamount));
         if (interestratepercent < 0) throw new ArgumentException("Interest rate cannot be negative.", nameof(interestratepercent));
         if (duedate <= startdate) throw new ArgumentException("Due date must be after start date.", nameof(duedate));
-
-        LoanID = Guid.NewGuid().ToString(); // <<< ADDED
 
         PrincipalAmount = principalamount;
         OutstandingAmount = principalamount;
@@ -81,11 +74,6 @@
     }
 
     public void CloseLoan() => Status = LoanStatus.Closed;
-
-    public override string ToString()
-    {
-        return $"Loan ID: {LoanID}\nOutstanding: {OutstandingAmount}\nRate: {InterestRatePercent}%\nTerm: {TermYears} years\nDue: {DueDate:d}\nStatus: {Status}";
-    }
 }
 
 // Rate lookup table
